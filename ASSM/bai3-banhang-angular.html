@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: fit-content;
+            height: fit-content;
+            margin: 50px auto;
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .title {
+            margin-bottom: 20px;
+        }
+
+        .test {
+            width: 120px;
+            border: none;
+            outline: none;
+            pointer-events: none;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" ng-app="myapp" ng-controller="myctrl">
+        <div class="title">
+            <h2>BÁN HÀNG</h2>
+            <select id="price-range" class="price-range" ng-model="range" ng-init="range = 6">
+                <option value="1">$0-$500</option>
+                <option value="2">$500-$2000</option>
+                <option value="3">$2000-$4000</option>
+                <option value="4">$4000-$6000</option>
+                <option value="5">$6000+</option>
+                <option value="6">Show All</option>
+            </select>
+        </div>
+        <table class="table table-bordered table-hover text-monospace">
+            <thead class="thead-light">
+                <tr>
+                    <th><input type="checkbox" ng-model="checkAll"
+                            ng-click="qty1 = '';qty2 = '';qty3 = '';qty4 = '';qty5 = '';qty6 = '';qty7 = '';qty8 = ''">
+                    </th>
+                    <th>Hàng hóa</th>
+                    <th>Đơn giá</th>
+                    <th>Số lượng</th>
+                    <th>Thành tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-show="range == 2 || range == 6">
+                    <td><input type="checkbox" ng-model="check1" ng-checked="checkAll" ng-click="qty1 = ''"></td>
+                    <td>Mercedes Benz</td>
+                    <td>$800</td>
+                    <td><input ng-model="qty1" type="number" ng-init="qty1 = ''" ng-disabled="checkAll || check1"></td>
+                    <td><input type="number" class="test" ng-model="price1 = qty1*800"></td>
+                </tr>
+                <tr ng-show="range == 3 || range == 6">
+                    <td><input type="checkbox" ng-model="check2" ng-checked="checkAll" ng-click="qty2 = ''"></td>
+                    <td>Audi A8L</td>
+                    <td>$3200</td>
+                    <td><input ng-model="qty2" type="number" ng-init="qty2 = ''" ng-disabled="checkAll || check2"></td>
+                    <td><input type="number" class="test" ng-model="price2 = qty2*3200"></td>
+                </tr>
+                <tr ng-show="range == 4 || range == 6">
+                    <td><input type="checkbox" ng-model="check3" ng-checked="checkAll" ng-click="qty3 = ''"></td>
+                    <td>Tesla Model 3</td>
+                    <td>$4000</td>
+                    <td><input ng-model="qty3" type="number" ng-init="qty3 = ''" ng-disabled="checkAll || check3"></td>
+                    <td><input type="number" class="test" ng-model="price3 = qty3*4000"></td>
+                </tr>
+                <tr ng-show="range == 2 || range == 6">
+                    <td><input type="checkbox" ng-model="check4" ng-checked="checkAll" ng-click="qty4 = ''"></td>
+                    <td>Suzuki Bandit</td>
+                    <td>$1400</td>
+                    <td><input ng-model="qty4" type="number" ng-init="qty4 = ''" ng-disabled="checkAll || check4"></td>
+                    <td><input type="number" class="test" ng-model="price4 = qty4*1400"></td>
+                </tr>
+                <tr ng-show="range == 3 || range == 6">
+                    <td><input type="checkbox" ng-model="check5" ng-checked="checkAll" ng-click="qty5 = ''"></td>
+                    <td>Honda Civic</td>
+                    <td>$2700</td>
+                    <td><input ng-model="qty5" type="number" ng-init="qty5 = ''" ng-disabled="checkAll || check5"></td>
+                    <td><input type="number" class="test" ng-model="price5 = qty5*2700"></td>
+                </tr>
+                <tr ng-show="range == 4 || range == 6">
+                    <td><input type="checkbox" ng-model="check6" ng-checked="checkAll" ng-click="qty6 = ''"></td>
+                    <td>Tesla Model S</td>
+                    <td>$4999</td>
+                    <td><input ng-model="qty6" ng-init="qty6 = ''" type="number" ng-disabled="checkAll || check6"></td>
+                    <td><input type="number" class="test" ng-model="price6 = qty6*4999"></td>
+                </tr>
+                <tr ng-show="range == 1 || range == 6">
+                    <td><input type="checkbox" ng-model="check7" ng-checked="checkAll" ng-click="qty7 = ''"></td>
+                    <td>Yamaha MT-09</td>
+                    <td>$390</td>
+                    <td><input ng-model="qty7" ng-init="qty7 = ''" type="number" ng-disabled="checkAll || check7"></td>
+                    <td><input type="number" class="test" ng-model="price7 = qty7*390"></td>
+                </tr>
+                <tr ng-show="range == 5 || range == 6">
+                    <td><input type="checkbox" ng-model="check8" ng-checked="checkAll" ng-click="qty8 = ''"></td>
+                    <td>Vinfast a34</td>
+                    <td>$9999</td>
+                    <td><input ng-model="qty8" ng-init="qty8 = ''" type="number" ng-disabled="checkAll || check8"></td>
+                    <td><input ng-model="price8 = qty8*9999" type="number" class="test"></td>
+                </tr>
+                <tr>
+                    <td colspan="4">TỔNG</td>
+                    <td>{{price1 + price2 + price3 + price4 + price5 + price6 + price7 + price8 | currency : '$' : 0}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        var myapp = angular.module("myapp", [])
+        myapp.controller("myctrl", function ($scope) {
+
+        })
+    </script>
+</body>
+
+</html>

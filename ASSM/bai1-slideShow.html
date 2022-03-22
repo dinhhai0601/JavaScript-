@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            margin: 50px auto;
+            width: fit-content;
+            height: fit-content;
+            position: relative;
+        }
+
+        .slide-container {
+            width: 800px;
+        }
+
+        img {
+            width: 100%;
+
+        }
+
+        .pic {
+            text-align: center;
+            display: none;
+        }
+
+        .left,
+        .right {
+            position: absolute;
+            padding: 10px;
+            background-color: grey;
+            cursor: pointer;
+            top: 50%;
+            color: white;
+            border: none;
+            margin-top: -20px;
+            transition: 0.3s;
+            font-weight: bold;
+            user-select: none;
+        }
+
+        .left:hover,
+        .right:hover {
+            background-color: rgb(155, 155, 155);
+        }
+
+        .right {
+            right: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">     
+        <div class="slide-container">
+            <div class="pic">
+                <img src="Pic/as1.jpg" alt="">
+                <div class="text">1/5</div>
+            </div>
+            <div class="pic">
+                <img src="Pic/as2.jpg" alt="">
+                <div class="text">2/5</div>
+            </div>
+            <div class="pic">
+                <img src="Pic/as3.jpg" alt="">
+                <div class="text">3/5</div>
+            </div>
+            <div class="pic">
+                <img src="Pic/as4.jpg" alt="">
+                <div class="text">4/5</div>
+            </div>
+            <div class="pic">
+                <img src="Pic/as5.jpg" alt="">
+                <div class="text">5/5</div>
+            </div>
+            <button class="left" onclick="movePic(-1)">&lt</button>
+            <button class="right" onclick="movePic(1)">&gt</button>
+        </div>
+    </div>
+
+    <script>
+        var slides = document.getElementsByClassName("pic")
+        var index = 1
+        showPic(index)
+        function movePic(a) {
+            showPic(index += a)
+        }
+        function showPic(n) {
+            if (index > slides.length) index = 1
+            if (index < 1) index = slides.length
+            for (pic of slides) pic.style.display = "none"
+            slides[index - 1].style.display = "block"
+        }
+    </script>
+</body>
+
+</html>

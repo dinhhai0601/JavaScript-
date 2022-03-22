@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+
+        .container {
+            width: 500px;
+            height: fit-content;
+            margin: 50px auto;
+            border: 1px solid grey;
+            border-radius: 20px;
+            padding: 25px;
+        }
+
+        .title {
+            font-size: 25px;
+            font-weight: 500;
+            position: relative;
+            width: fit-content;
+            margin: 0 auto;
+            font-weight: bold;
+        }
+
+        label {
+            width: 100px;
+            float: left;
+        }
+
+        .line {
+            width: fit-content;
+            margin: 20px 0;
+        }
+
+        .input,
+        .genders {
+            width: 400px;
+            padding: 6px 15px;
+            margin-top: 5px;
+            outline: none;
+            border: 1px solid rgb(181, 181, 181);
+        }
+
+        .line span {
+            margin-left: 5px;
+        }
+
+        #btn {
+            padding: 10px 20px;
+            color: white;
+            border: none;
+            background-color: green;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        #btn:hover {
+            background-color: rgb(2, 165, 2);
+        }
+
+        .alert {
+            color: red;
+            line-height: 25px;
+            font-style: italic;
+        }
+
+        .error {
+            color: red;
+            font-size: 15px;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="title">ĐĂNG KÝ THÀNH VIÊN</div>
+        <form id="form" class="form" onsubmit="  validate()">
+            <div class="info">
+                <div class="line">
+                    <label for="">Mã sinh viên</label><br>
+                    <input class="input" type="text" name="" id="ID" onclick="removeError()">
+                    <span class="error" id="error-id"></span>
+                </div>
+                <div class="line">
+                    <label for="">Họ và tên</label><br>
+                    <input class="input" type="text" id="fullname">
+                    <span class="error" id="error-name"></span>
+                </div>
+                <div class="line">
+                    <label for="">Email</label><br>
+                    <input class="input" type="text" name="" id="email" onclick="removeError()">
+                    <span class="error" id="error-email"></span>
+                </div>
+                <div class="line">
+                    <label for="">Giới tính</label><br>
+                    <div class="genders" id="genders">
+                        <input name="gender" type="radio" onclick="removeError()"><span>Nam</span>
+                        <input name="gender" type="radio" onclick="removeError()"><span>Nữ</span>
+                    </div>
+                    <span class="error" id="error-gender"></span>
+                </div>
+                <div class="line">
+                    <label for="">Sở thích</label><br>
+                    <div class="genders" id="hobbies">
+                        <input name="hobby" type="checkbox" onclick="removeError()"><span>Đọc sách</span>
+                        <input name="hobby" type="checkbox" onclick="removeError()"><span>Du lịch</span>
+                        <input name="hobby" type="checkbox" onclick="removeError()"><span>Âm nhạc</span>
+                        <input name="hobby" type="checkbox" onclick="removeError()"><span>Game</span>
+                        <input name="hobby" type="checkbox" onclick="removeError()"><span>Khác</span>
+                    </div>
+                    <span class="error" id="error-hobby"></span>
+                </div>
+                <div class="line">
+                    <label for="">Quốc tịch</label>
+                    <select name="" id="nation" class="input" onclick="removeError()">
+                        <option value="" selected disabled>Chọn quốc tịch</option>
+                        <option value="1">Vietnam</option>
+                        <option value="1">USA</option>
+                        <option value="1">Angola</option>
+                        <option value="1">Turkey</option>
+                    </select><br>
+                    <span class="error" id="error-nation"></span>
+                </div>
+                <div class="line">
+                    <label for="">Ghi chú</label>
+                    <textarea name="" id="note" cols="30" rows="10" class="input"
+                        onclick="removeError()"></textarea><br>
+                    <span class="error" id="error-note"></span>
+                </div>
+                <div class="line">
+                    <button type="submit" id="btn" onclick="removeError()">ĐĂNG KÝ</button>
+                </div>
+                <div id="alert" class="alert"></div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        var id = document.getElementById("ID")
+        var fname = document.getElementById("fullname")
+        var email = document.getElementById("email")
+        var gender = document.getElementsByName("gender")
+        var nation = document.getElementById("nation")
+        var genColor = document.getElementById("genders")
+        var hobbies = document.getElementsByName("hobby")
+        var colorHobby = document.getElementById("hobbies")
+        var note = document.getElementById("note")
+        var alert = document.getElementById("alert")
+        var emailRegex = /\S+@\S+\.\S+/
+
+        var errorName = document.getElementById("error-name")
+        var errorId = document.getElementById("error-id")
+        var errorEmail = document.getElementById("error-email")
+        var errorGender = document.getElementById("error-gender")
+        var errorHobby = document.getElementById("error-hobby")
+        var errorNation = document.getElementById("error-nation")
+        var errorNote = document.getElementById("error-note")
+        var errors = document.getElementsByClassName("error")
+
+        function validate() {
+            var success = true
+            var hobbyFlag = 0
+            var text = ''
+            if (fname.value == "") {
+                errorName.innerHTML = "Không được để trống họ tên"
+                fname.style.border = "1px solid red"
+                success = false
+            }
+            if (id.value == "") {
+                errorId.innerHTML = "Không được để trống mã sinh viên"
+                id.style.border = "1px solid red"
+                success = false
+            }
+            if (email.value == "") {
+                errorEmail.innerHTML = "Không được để trống email"
+                email.style.border = "1px solid red"
+                success = false
+            } else if (email.value.match(emailRegex) == null) {
+                errorEmail.innerHTML = "Email không đúng định dạng"
+                success = false
+            }
+            if (!gender[0].checked && !gender[1].checked) {
+                errorGender.innerHTML = "Giới tính không được để trống"
+                genColor.style.border = "1px solid red"
+                success = false
+            }
+            for (let i = 0; i < hobbies.length; i++) {
+                if (hobbies[i].checked) hobbyFlag++
+            }
+            if (hobbyFlag == 0) {
+                errorHobby.innerHTML = "Sở thích không được để trống"
+                colorHobby.style.border = "1px solid red"
+                success = false
+            }
+            if (nation.value == "") {
+                errorNation.innerHTML = "Quốc tịch không được để trống"
+                nation.style.border = "1px solid red"
+                success = false
+            }
+            if (note.value < 200) {
+                errorNote.innerHTML = "Ghi chú phải trên 200 từ"
+                note.style.border = "1px solid red"
+                success = false
+            }
+            if (success == true) {
+                alert("NHẬP ĐÚNG RỒI BẠN TRAI ƠI!!")
+            }
+            return success
+        }
+        function removeError() {
+            id.style.border = ""
+            fname.style.border = ""
+            email.style.border = ""
+            genColor.style.border = ""
+            nation.style.border = ""
+            colorHobby.style.border = ""
+            note.style.border = ""
+            for (e of errors) e.innerHTML = ""
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: fit-content;
+            height: fit-content;
+            border-radius: 20px;
+            padding: 25px;
+            margin: 50px auto;
+            text-align: center;
+            position: relative;
+        }
+
+        .mytable {
+            border-collapse: collapse;
+            margin: 10px;
+        }
+
+        .mytable th,
+        td {
+            padding: 8px 10px;
+        }
+
+        .price-range {
+            width: 100px;
+            margin: 10px;
+        }
+
+        #fly {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 30px;
+        }
+
+        input[type=number] {
+            outline: none;
+            padding: 1px 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="title">
+            <h2>BÁN HÀNG</h2>
+            <select id="price-range" class="price-range" onclick="showEachList()">
+                <option disabled selected>Mức giá</option>
+                <option value="1">$0-$500</option>
+                <option value="2">$500-$2000</option>
+                <option value="3">$2000-$4000</option>
+                <option value="4">$4000-$6000</option>
+                <option value="5">$6000+</option>
+                <option value="6">Show All</option>
+            </select>
+        </div>
+
+        <table border="1" id="mytable" class="mytable">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" name="" id="checkAll" onchange="checkAll(this)"></th>
+                    <th>Hàng hóa</th>
+                    <th>Đơn giá</th>
+                    <th>Số lượng</th>
+                    <th>Thành tiền</th>
+                </tr>
+            </thead>
+            <tbody id="mylist">
+                <tr class="row">
+                    <td><input type="checkbox" name="checkbox" id="" onchange="turnQtyInput(this)"></td>
+                    <td>Mercedes Benz</td>
+                    <td>$800</td>
+                    <td><input type="number" name="qty" id="" disabled onchange="countCost()"></td>
+                    <td><span class="cost"></span></td>
+                </tr>
+                <tr class="row">
+                    <td><input type="checkbox" name="checkbox" id="" onchange="turnQtyInput(this)"></td>
+                    <td>Audi A8L</td>
+                    <td>$3200</td>
+                    <td><input type="number" name="qty" id="" disabled onchange="countCost()"></td>
+                    <td><span class="cost"></span></td>
+                </tr>
+                <tr class="row">
+                    <td><input type="checkbox" name="checkbox" id="" onchange="turnQtyInput(this)"></td>
+                    <td>Tesla Model 3</td>
+                    <td>$4000</td>
+                    <td><input type="number" name="qty" id="" disabled onchange="countCost()"></td>
+                    <td><span class="cost"></span></td>
+                </tr>
+                <tr class="row">
+                    <td><input type="checkbox" name="checkbox" id="" onchange="turnQtyInput(this)"></td>
+                    <td>Suzuki Bandit</td>
+                    <td>$1400</td>
+                    <td><input type="number" name="qty" id="" disabled onchange="countCost()"></td>
+                    <td><span class="cost"></span></td>
+                </tr>
+                <tr class="row">
+                    <td><input type="checkbox" name="checkbox" id="" onchange="turnQtyInput(this)"></td>
+                    <td>Honda Civic</td>
+                    <td>$2700</td>
+                    <td><input type="number" name="qty" id="" disabled onchange="countCost()"></td>
+                    <td><span class="cost"></span></td>
+                </tr>
+                <tr class="row">
+                    <td><input type="checkbox" name="checkbox" id="" onchange="turnQtyInput(this)"></td>
+                    <td>Tesla Model S</td>
+                    <td>$4999</td>
+                    <td><input type="number" name="qty" id="" disabled onchange="countCost()"></td>
+                    <td><span class="cost"></span></td>
+                </tr>
+                <tr class="row">
+                    <td><input type="checkbox" name="checkbox" id="" onchange="turnQtyInput(this)"></td>
+                    <td>Yamaha MT-09</td>
+                    <td>$390</td>
+                    <td><input type="number" name="qty" id="" disabled onchange="countCost()"></td>
+                    <td><span class="cost"></span></td>
+                </tr>
+                <tr class="row">
+                    <td><input type="checkbox" name="checkbox" id="" onchange="turnQtyInput(this)"></td>
+                    <td>Vinfast a34</td>
+                    <td>$9999</td>
+                    <td><input type="number" name="qty" id="" disabled onchange="countCost()"></td>
+                    <td><span class="cost"></span></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4">TỔNG</td>
+                    <td><span id="totalcost"></span></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <script>
+        var priceRange = document.getElementById("price-range")
+        var mylist = document.getElementById("mylist")
+        var rows = mylist.getElementsByTagName("tr")
+        var cost = document.getElementsByClassName("cost")
+        var qty = document.getElementsByName("qty")
+        var checkboxes = document.getElementsByName("checkbox")
+        var totalcost = document.getElementById("totalcost")
+
+        //Hien thi "none" hoac ""
+        function styleDisplay(mess) { for (e of rows) e.style.display = mess }
+
+        //Hien thi theo range, 0 la infinity
+        function iteratePriceRange(lower, upper) {
+            styleDisplay("none")
+            if (upper == 0) {
+                upper = Infinity
+            } else if (lower == 0 && upper == 0) {
+                styleDisplay("")
+            }
+            for (let i = 0; i < rows.length; i++) {
+                var price = +rows[i].children[2].innerText.substring(1)
+                if (price > lower && price <= upper) {
+                    rows[i].style.display = ""
+                }
+            }
+        }
+
+        //hien thi price theo value cua select
+        function showEachList() {
+            switch (priceRange.value) {
+                case "1":
+                    iteratePriceRange(0, 500)
+                    break;
+                case "2":
+                    iteratePriceRange(500, 2000)
+                    break;
+                case "3":
+                    iteratePriceRange(2000, 4000)
+                    break;
+                case "4":
+                    iteratePriceRange(4000, 6000)
+                    break;
+                case "5":
+                    iteratePriceRange(6000, 0)
+                    break;
+                case "6":
+                    iteratePriceRange(0, 0)
+                    break;
+            }
+        }
+
+        function turnQtyInput(source) {
+            var row = source.parentElement.parentElement
+            var qtyInput = row.getElementsByTagName("input")[1]
+            if (source.checked == true) {
+                qtyInput.disabled = false
+            } else {
+                qtyInput.disabled = true
+                resetCost(source)
+            }
+        }
+
+        function checkAll(source) {
+            for (let i = 0; i < rows.length; i++) {
+                checkboxes[i].checked = source.checked
+                qty[i].disabled = !source.checked
+            }
+            resetCost("all")
+        }
+        function countCost() {
+            var sum = 0
+            for (let i = 0; i < rows.length; i++) {
+                var price = +rows[i].getElementsByTagName("td")[2].innerText.substring(1)
+                cost[i].innerText = "$" + qty[i].value * price
+                sum += +cost[i].innerText.substring(1)
+            }
+            totalcost.innerHTML = "$" + sum
+        }
+
+        function resetCost(source) {
+            if (source == "all") {
+                for (let i = 0; i < rows.length; i++) {
+                    rows[i].getElementsByTagName("input")[1].value = 0
+                }
+                countCost()
+            }
+            var row = source.parentElement.parentElement
+            row.getElementsByTagName("input")[1].value = 0
+            countCost()
+        }
+    </script>
+</body>
+
+</html>
